@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}QuestDark — Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero__inner">
+        <span class="badge">Темная атмосфера • Реальные эмоции</span>
+        <h1>Погрузись в мир загадок и адреналина</h1>
+        <p class="hero__lead">Выбирай квест по уровню сложности и страха, собирай команду и бронируй удобное время онлайн за 1 минуту.</p>
+        <div class="hero__actions">
+            <a href="{% url 'quests:catalog' %}" class="btn btn--accent">Смотреть каталог</a>
+            <a href="{% url 'quests:search' %}" class="btn btn--outline">Найти квест</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section__head">
+            <h2>Популярные квесты</h2>
+            <a href="{% url 'quests:catalog' %}" class="link-accent">Весь каталог &rarr;</a>
+        </div>
+
+        <div class="catalog-grid">
+            {% for quest in top_quests %}
+            <article class="card">
+                {% if quest.image %}
+                    <img src="{{ quest.image.url }}" alt="Постер квеста «{{ quest.title }}»" class="card__img" width="600" height="400" loading="lazy">
+                {% else %}
+                    <div class="card__img card__img--placeholder">
+                        <span>{{ quest.genre }}</span>
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h3 class="card__title">{{ quest.title }}</h3>
+                    <p class="card__meta">{{ quest.genre }} • Сложность: {{ quest.difficulty }}/5 • Страх: {{ quest.fear_level }}/5</p>
+                    <p class="card__excerpt">{{ quest.description|truncatechars:85 }}</p>
+                    <p class="card__price">{{ quest.price|floatformat:0 }} ₽</p>
+                    <a href="{% url 'quests:quest_detail' quest.pk %}" class="btn btn--accent btn--full">Подробнее</a>
+                </div>
+            </article>
+            {% empty %}
+            <p>Квесты пока не добавлены.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

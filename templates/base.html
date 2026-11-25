@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}QuestDark — Квест-комнаты и Антикафе{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="{% url 'quests:home' %}" class="logo">QUEST<span>DARK</span></a>
+            <nav class="nav" id="main-nav" aria-label="Основная навигация">
+                <ul class="nav__list">
+                    <li><a href="{% url 'quests:home' %}">Главная</a></li>
+                    <li><a href="{% url 'quests:catalog' %}">Каталог</a></li>
+                    <li><a href="{% url 'quests:search' %}">Поиск</a></li>
+                    <li><a href="{% url 'quests:about' %}">О проекте</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'users:profile' %}">Кабинет ({{ user.username }})</a></li>
+                        <li>
+                            <form method="post" action="{% url 'users:logout' %}" class="inline-form">
+                                {% csrf_token %}
+                                <button type="submit" class="nav__logout">Выйти</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'users:login' %}">Войти</a></li>
+                        <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <button class="burger" id="burger-btn" aria-label="Открыть меню" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+        {% if messages %}
+            <div class="container messages">
+                {% for message in messages %}
+                    <div class="alert alert--{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <p>&copy; 2026 QuestDark. Все права защищены.</p>
+            <p class="footer__sub">Квест-комнаты и антикафе • Ежедневно с 10:00 до 23:00</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

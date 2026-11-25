@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Поиск квестов — QuestDark{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1>Поиск по каталогу</h1>
+
+        <form method="get" id="search-page-form" class="search-form">
+            <label for="live-search-input" class="sr-only">Название или жанр квеста</label>
+            <input type="search" id="live-search-input" name="q" value="{{ query }}" placeholder="Введите название, жанр или ключевое слово..." class="form-control">
+            <button type="submit" class="btn btn--accent">Найти</button>
+        </form>
+
+        {% if query %}
+            <p id="search-count" class="text-muted search-summary">Результаты по запросу «{{ query }}»: {{ results|length }}</p>
+        {% else %}
+            <p id="search-count" class="text-muted search-summary">Все доступные квесты в каталоге: {{ results|length }}</p>
+        {% endif %}
+
+        <div class="catalog-grid" id="search-results-grid">
+            {% for quest in results %}
+            <article class="card search-item" data-title="{{ quest.title|lower }}" data-genre="{{ quest.genre|lower }}" data-desc="{{ quest.description|lower }}">
+                {% if quest.image %}
+                    <img src="{{ quest.image.url }}" alt="Постер квеста «{{ quest.title }}»" class="card__img" width="600" height="400" loading="lazy">
+                {% else %}
+                    <div class="card__img card__img--placeholder">
+                        <span>{{ quest.genre }}</span>
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h2 class="card__title">{{ quest.title }}</h2>
+                    <p class="card__meta">{{ quest.genre }} | Сложность: {{ quest.difficulty }}/5</p>
+                    <p class="card__excerpt">{{ quest.description|truncatechars:85 }}</p>
+                    <p class="card__price">{{ quest.price|floatformat:0 }} ₽</p>
+                    <a href="{% url 'quests:quest_detail' quest.pk %}" class="btn btn--accent btn--full">Подробнее</a>
+                </div>
+            </article>
+            {% empty %}
+            <p>По вашему запросу ничего не найдено.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Бронирование: {{ quest.title }} — QuestDark{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container container--narrow">
+        <a href="{% url 'quests:quest_detail' quest.pk %}" class="link-muted">&larr; Вернуться к описанию квеста</a>
+        <h1>Бронирование: {{ quest.title }}</h1>
+        <p class="text-muted">Макс. игроков: <strong>{{ quest.max_players }}</strong> • Базовая цена: <strong>{{ quest.price|floatformat:0 }} ₽</strong></p>
+
+        <form id="booking-form" method="post" class="card card--padded" data-max-players="{{ quest.max_players }}" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert--error">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_customer_name">Ваше имя:</label>
+                {{ form.customer_name }}
+                {{ form.customer_name.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_customer_email">Email:</label>
+                {{ form.customer_email }}
+                {{ form.customer_email.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_customer_phone">Телефон:</label>
+                {{ form.customer_phone }}
+                {{ form.customer_phone.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_players_count">Количество игроков (от 2 до {{ quest.max_players }}):</label>
+                <input type="number" name="players_count" id="id_players_count" class="form-control" min="2" max="12" value="{{ form.players_count.value|default:2 }}" required>
+                {{ form.players_count.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_session_id">Выберите сеанс:</label>
+                <select name="session_id" id="id_session_id" class="form-control" required>
+                    <option value="">-- Выберите время --</option>
+                    {% for s in sessions %}
+                        <option value="{{ s.id }}" {% if form.session_id.value|stringformat:"s" == s.id|stringformat:"s" %}selected{% endif %}>
+                            {{ s.date|date:"d.m.Y" }} в {{ s.time|time:"H:i" }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {{ form.session_id.errors }}
+                <p id="slot-status" class="slot-status" aria-live="polite"></p>
+            </div>
+
+            <div class="form-group form-group--checkbox">
+                <label>
+                    <input type="checkbox" name="add_actor" id="id_add_actor" {% if form.add_actor.value %}checked{% endif %}>
+                    Доп. аниматор (+500 ₽)
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn--accent btn--full">Подтвердить бронь</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

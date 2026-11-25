@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет — QuestDark{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1>Личный кабинет: {{ user.username }}</h1>
+        <p class="text-muted">Email: {{ user.email|default:"не указан" }}</p>
+
+        <div class="profile-grid">
+            <div>
+                <h2>Мои бронирования</h2>
+                {% for b in bookings %}
+                    <article class="card card--padded booking-card">
+                        <div class="booking-row">
+                            <div>
+                                <h3>{{ b.quest.title }}</h3>
+                                <p class="text-muted">Дата и время: <strong>{{ b.session.date|date:"d.m.Y" }} в {{ b.session.time|time:"H:i" }}</strong></p>
+                                <p class="text-muted">Игроков: {{ b.players_count }} {% if b.add_actor %}(+ аниматор){% endif %} • Итого: <span class="text-accent">{{ b.total_price|floatformat:0 }} ₽</span></p>
+                                <span class="status-tag status-tag--{{ b.status }}">{{ b.get_status_display }}</span>
+                            </div>
+                            {% if b.status != 'cancelled' %}
+                            <form method="post" action="{% url 'users:cancel_booking' b.id %}" class="inline-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn--outline">Отменить</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="card card--padded">
+                        <p>У вас пока нет активных бронирований.</p>
+                        <a href="{% url 'quests:catalog' %}" class="btn btn--accent action-gap">Выбрать квест</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <h2>Мои команды</h2>
+                {% for team in teams %}
+                    <div class="card card--padded team-card">
+                        <h3>{{ team.name }}</h3>
+                        <p class="text-muted">{{ team.members_list|truncatechars:120|default:"Только капитан" }}</p>
+                    </div>
+                {% empty %}
+                    <p class="text-muted team-empty">Команды еще не созданы.</p>
+                {% endfor %}
+
+                <form method="post" id="team-form" class="card card--padded" novalidate>
+                    <h3>Создать новую команду</h3>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ team_form.name.id_for_label }}">Название команды:</label>
+                        {{ team_form.name }}
+                        {{ team_form.name.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ team_form.members_list.id_for_label }}">Участники:</label>
+                        {{ team_form.members_list }}
+                        {{ team_form.members_list.errors }}
+                    </div>
+                    <button type="submit" class="btn btn--accent btn--full">Сохранить команду</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

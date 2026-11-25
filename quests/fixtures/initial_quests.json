@@ -1,0 +1,92 @@
+[
+  {
+    "model": "quests.quest",
+    "pk": 1,
+    "fields": {
+      "title": "Тайна старого маяка",
+      "description": "Вы оказались на заброшенном маяке, где 50 лет назад пропал смотритель. Разгадайте тайну его исчезновения, пока прилив не затопил нижний уровень.",
+      "genre": "Хоррор",
+      "fear_level": 4,
+      "difficulty": 3,
+      "duration_minutes": 60,
+      "max_players": 6,
+      "price": "2500.00",
+      "image": "quests/lighthouse.jpg"
+    }
+  },
+  {
+    "model": "quests.quest",
+    "pk": 2,
+    "fields": {
+      "title": "Бункер 1986",
+      "description": "Постапокалиптический квест в секретном бункере времен Холодной войны. Найдите способ выбраться наружу, пока система вентиляции не отключилась навсегда.",
+      "genre": "Постапокалипсис",
+      "fear_level": 3,
+      "difficulty": 4,
+      "duration_minutes": 60,
+      "max_players": 8,
+      "price": "3000.00",
+      "image": "quests/bunker.jpg"
+    }
+  },
+  {
+    "model": "quests.quest",
+    "pk": 3,
+    "fields": {
+      "title": "Шерлок Холмс: Последнее дело",
+      "description": "Помогите великому детективу раскрыть запутанное дело об убийстве в викторианском Лондоне.",
+      "genre": "Детектив",
+      "fear_level": 1,
+      "difficulty": 5,
+      "duration_minutes": 60,
+      "max_players": 5,
+      "price": "2800.00",
+      "image": "quests/sherlock.jpg"
+    }
+  },
+  {
+    "model": "quests.quest",
+    "pk": 4,
+    "fields": {
+      "title": "Шёпот старого приюта",
+      "description": "Мрачный перформанс с участием актеров. Выберитесь из запертого крыла заброшенного особняка, не привлекая внимания его обитателей.",
+      "genre": "Хоррор",
+      "fear_level": 5,
+      "difficulty": 3,
+      "duration_minutes": 75,
+      "max_players": 6,
+      "price": "4200.00",
+      "image": "quests/asylum.jpg"
+    }
+  },
+  {
+    "model": "quests.quest",
+    "pk": 5,
+    "fields": {
+      "title": "Ограбление века",
+      "description": "Проникните в хранилище центрального банка, обойдите лазерную сигнализацию и заберите главный артефакт коллекции за 60 минут.",
+      "genre": "Приключения",
+      "fear_level": 1,
+      "difficulty": 4,
+      "duration_minutes": 60,
+      "max_players": 6,
+      "price": "3500.00",
+      "image": "quests/heist.jpg"
+    }
+  },
+  {
+    "model": "quests.quest",
+    "pk": 6,
+    "fields": {
+      "title": "Нейросеть: Протокол Выхода",
+      "description": "Вы застряли внутри цифровой симуляции корпорации будущего. Взломайте ядро системы, прежде чем произойдет полная перезагрузка.",
+      "genre": "Фантастика",
+      "fear_level": 2,
+      "difficulty": 4,
+      "duration_minutes": 60,
+      "max_players": 7,
+      "price": "3200.00",
+      "image": "quests/cyber.jpg"
+    }
+  }
+]

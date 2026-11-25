@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}{{ quest.title }} — QuestDark{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <a href="{% url 'quests:catalog' %}" class="link-muted">&larr; Назад в каталог</a>
+
+        <div class="detail-grid">
+            <div class="detail-media">
+                {% if quest.image %}
+                    <img src="{{ quest.image.url }}" alt="Постер квеста «{{ quest.title }}»" class="detail-media__img" width="600" height="400">
+                {% else %}
+                    <div class="detail-media__placeholder">
+                        <span>{{ quest.genre }}</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="detail-info">
+                <span class="badge">{{ quest.genre }}</span>
+                <h1>{{ quest.title }}</h1>
+                <p class="detail-desc">{{ quest.description }}</p>
+
+                <ul class="specs-list">
+                    <li><strong>Сложность:</strong> {{ quest.difficulty }} / 5</li>
+                    <li><strong>Уровень страха:</strong> {{ quest.fear_level }} / 5</li>
+                    <li><strong>Длительность:</strong> {{ quest.duration_minutes }} мин</li>
+                    <li><strong>Команда:</strong> от 2 до {{ quest.max_players }} игроков</li>
+                    <li><strong>Стоимость игры:</strong> <span class="text-accent">{{ quest.price|floatformat:2 }} ₽</span></li>
+                </ul>
+
+                <div class="detail-actions">
+                    <a href="{% url 'quests:book_quest' quest.pk %}" class="btn btn--accent">Забронировать квест</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="sessions-block">
+            <h2>Ближайшие свободные сеансы</h2>
+            <div class="sessions-grid">
+                {% for s in sessions %}
+                    <a href="{% url 'quests:book_quest' quest.pk %}?session={{ s.id }}" class="session-pill">
+                        <span>{{ s.date|date:"d.m.Y" }}</span>
+                        <strong>{{ s.time|time:"H:i" }}</strong>
+                    </a>
+                {% empty %}
+                    <p class="text-muted">Свободных сеансов на ближайшие дни пока нет.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

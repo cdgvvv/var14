@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}О проекте и правила — QuestDark{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1>О проекте QuestDark и правила игры</h1>
+        <p class="hero__lead">QuestDark — пространство командных квестов и уютного отдыха в темной стилистике. Мы объединяем проработанные сценарии, живую атмосферу и удобное онлайн-бронирование.</p>
+
+        <div class="about-grid">
+            <article class="card card--padded">
+                <h2>Правила посещения</h2>
+                <ul class="specs-list">
+                    <li>Приходите за 10–15 минут до начала выбранного сеанса.</li>
+                    <li>В состоянии алкогольного или иного опьянения участие в игре невозможно.</li>
+                    <li>Оптимальный состав команды — от 2 до 8 игроков в зависимости от комнаты.</li>
+                    <li>При отмене бронирования в личном кабинете слот автоматически освобождается.</li>
+                </ul>
+            </article>
+
+            <article class="card card--padded">
+                <h2>Палитра UI-Kit (Темная тема)</h2>
+                <ul class="specs-list">
+                    <li><strong>Фон (Background):</strong> #0B1120</li>
+                    <li><strong>Карточки (Surface):</strong> #1E293B</li>
+                    <li><strong>Акцент (Accent):</strong> #F59E0B</li>
+                    <li><strong>Шрифты:</strong> Montserrat и Inter</li>
+                </ul>
+            </article>
+        </div>
+
+        <div class="sessions-block">
+            <h2>Примеры комнат из каталога</h2>
+            <div class="catalog-grid">
+                {% for q in sample_quests %}
+                <article class="card">
+                    {% if q.image %}
+                        <img src="{{ q.image.url }}" alt="Постер квеста «{{ q.title }}»" class="card__img" width="600" height="400" loading="lazy">
+                    {% endif %}
+                    <div class="card__body">
+                        <h3 class="card__title">{{ q.title }}</h3>
+                        <p class="card__meta">{{ q.genre }} • {{ q.duration_minutes }} мин • {{ q.price|floatformat:0 }} ₽</p>
+                        <a href="{% url 'quests:quest_detail' q.pk %}" class="btn btn--accent btn--full">Перейти к квесту</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
